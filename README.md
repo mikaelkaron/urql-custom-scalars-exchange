@@ -2,6 +2,12 @@
 
 urql exchange to allow mapping of custom scalar types
 
+## Requirements
+
+Works with `graphql` 15, 16 and 17. Note that `graphql` 17 ships its type
+definitions in a form that needs TypeScript 4.9 or newer (and Node 22 or newer
+at runtime); `graphql` 15 and 16 have no such constraint.
+
 ## Example
 
 ```sh

@@ -4,25 +4,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        # Every major version listed in the `graphql` peer dependency range.
+        graphql: ['15', '16', '17']
+
+    name: graphql@${{ matrix.graphql }}
+
     steps:
       - name: Begin CI...
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Use Node 16
-        uses: actions/setup-node@v3
+      - name: Use Node 22
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 22.x
 
-      - name: Use cached node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            nodeModules-
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
+        env:
+          CI: true
+
+      - name: Pin graphql to ${{ matrix.graphql }}
+        if: matrix.graphql != '17'
+        run: yarn up graphql@^${{ matrix.graphql }}
         env:
           CI: true
 

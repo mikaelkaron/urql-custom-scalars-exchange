@@ -5,9 +5,9 @@ import {
   createClient,
   cacheExchange,
   fetchExchange,
+  gql,
 } from '@urql/core';
 import { IntrospectionQuery } from 'graphql';
-import gql from 'graphql-tag';
 import { pipe, map, makeSubject, publish, tap } from 'wonka';
 
 import scalarExchange from '../';
